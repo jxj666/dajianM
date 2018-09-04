@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+@@include('module/head.html')
+
+<body class="app sidebar-mini rtl sidenav-toggled">
+  @@include('module/header.html')
+  @@include('module/asside.html')
+
+  @@include('module/play_main.html')
+  @@include('module/pop_list_play.html')
+  @@include('module/pop_img.html')
+  @@include('module/pop_play.html')
+  @@include('module/pop_wait.html')
+
+  @@include('module/foot.html')
+  <script>
+    window.onload = function () {
+      dajian('play');
+    }
+  </script>
+</body>
+
+</html>

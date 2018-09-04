@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Main CSS-->
+  <link rel="stylesheet" type="text/css" href="css/theme.css">
+  <!-- Font-icon css-->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>大疆信息后台</title>
+</head>
+
+<body>
+  <section class="material-half-bg">
+    <div class="cover"></div>
+  </section>
+  <section class="login-content">
+    <div class="logo">
+      <h1>大疆信息后台</h1>
+    </div>
+    <div class="login-box">
+      <form class="login-form">
+        <h3 class="login-head">
+          <i class="fa fa-lg fa-fw fa-user"></i>登录</h3>
+        <div class="form-group">
+          <label class="control-label">邮箱</label>
+          <input id="str_user" class="form-control" type="text" placeholder="email" autofocus>
+        </div>
+        <div class="form-group">
+          <label class="control-label">密码</label>
+          <input id="str_pass" class="form-control" type="password" placeholder="Password">
+        </div>
+            <div class="form-group">
+              <label class="control-label">图形验证码</label>
+              <div class="row form-group">
+                <div class="col-12">
+                  <input id="str_pass_img" class="form-control" type="text" placeholder="输入下方图形验证码,可点击验证码更换">
+                </div>
+                <div class="h10"> &nbsp; </div>
+           
+                <div class="col-12 verify" id="verify">
+                  <img src="" alt="">
+                  <!-- <button type="button" class="btn btn-primary">发送验证码</button> -->
+                </div>
+              </div>
+  
+       
+        </div>
+        <div class="form-group">
+          <div class="utility">
+            <div class="animated-checkbox">
+              <label>
+                <input type="checkbox" id="bol_checkbox">
+                <span class="label-text">记录登录</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group btn-container">
+          <button class="btn btn-primary btn-block" type="button" id="login_btn">
+            <i class="fa fa-sign-in fa-lg fa-fw"></i>登录</button>
+        </div>
+      </form>
+
+    </div>
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/node-forge@0.7.0/dist/forge.min.js"></script>
+  <script src="js/jquery-3.2.1.js"></script>
+  <script src="js/popper.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js_s/"></script>
+  <script src="js/plugins/pace.js"></script>
+
+  <script>
+    window.onload = function () {
+      dajian('login');
+    }
+  </script>
+</body>
+
+</html>

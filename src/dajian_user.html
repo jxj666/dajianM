@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+@@include('module/head.html')
+
+<body class="app sidebar-mini rtl sidenav-toggled">
+  @@include('module/header.html')
+  @@include('module/asside.html')
+
+  @@include('module/user_main.html')
+  @@include('module/pop_user.html')
+
+  @@include('module/foot.html')
+  <script>
+    window.onload = function () {
+      dajian('user');
+    }
+  </script>
+</body>
+
+</html>
