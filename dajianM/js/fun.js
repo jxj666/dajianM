@@ -372,7 +372,7 @@ var fun = {
         var arr1 = data.data.list || [];
 
         for (var i = 0; i < arr1.length; i++) {
-          html1 += `<tr><td>${arr1[i].id}</td><td>${arr1[i].title}</td><td>${arr1[i].search_number}</td><td><button onclick='fun.deleteWordList(${arr1[i].id})'  class="btn btn-sm btn-danger" type="button">删除</button></td></tr>`;
+          html1 += `<tr><td>${arr1[i].id}</td><td>${arr1[i].sort}</td><td>${arr1[i].title}</td><td>${arr1[i].search_number}</td><td><button onclick='fun.deleteWordList(${arr1[i].id})'  class="btn btn-sm btn-danger" type="button">删除</button></td></tr>`;
         }
 
         $('#tbody').html(html1);
