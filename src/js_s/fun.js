@@ -1,5 +1,6 @@
 const data_c = {
-  req_url: "http://dj.majiangyun.com"
+  req_url: 'https://dj.majiangyun.com/',
+  req_url_http: "http://dj.majiangyun.com",
 };
 var data_v = {
   api_token: sessionStorage.api_token || localStorage.api_token,
@@ -140,24 +141,23 @@ function dajian(page) {
       $("#add_btn").on("click", () => {
         fun.addList();
       });
-    } else {
-    }
+    } else {}
   }, 1);
 }
 
 var fun = {
   getSessionId() {
     $.ajax({
-      method: "get",
-      url: `${data_c.req_url}/sessionId`,
-      data: {}
-    })
-      .done(function(data) {
+        method: "get",
+        url: `${data_c.req_url}/sessionId`,
+        data: {}
+      })
+      .done(function (data) {
         // console.log(data)
         data_v.sessionId = data.data.sessionId;
         fun.getCode();
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -176,16 +176,16 @@ var fun = {
     };
     // console.log(headersDate)
     $.ajax({
-      method: "get",
-      url: `${data_c.req_url}/verify`,
-      headers: headersDate,
-      data: {}
-    })
-      .done(function(data) {
+        method: "get",
+        url: `${data_c.req_url}/verify`,
+        headers: headersDate,
+        data: {}
+      })
+      .done(function (data) {
         // console.log(data)
         $(".verify img").attr("src", data.data.path);
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -276,16 +276,16 @@ var fun = {
       return;
     }
     $.ajax({
-      method: "POST",
-      headers: headersDate,
-      url: `${data_c.req_url}/api/user/login`,
-      data: {
-        email: str1,
-        password: str2,
-        code: str3
-      }
-    })
-      .done(function(data) {
+        method: "POST",
+        headers: headersDate,
+        url: `${data_c.req_url}/api/user/login`,
+        data: {
+          email: str1,
+          password: str2,
+          code: str3
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           if (bol1) {
@@ -304,7 +304,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -314,14 +314,14 @@ var fun = {
     sessionStorage.api_token = "";
     sessionStorage.uid = "";
     $.ajax({
-      method: "POST",
-      url: `${data_c.req_url}/api/user/logout`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid
-      }
-    })
-      .done(function(data) {
+        method: "POST",
+        url: `${data_c.req_url}/api/user/logout`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           alert(data.message);
@@ -332,7 +332,7 @@ var fun = {
         }
         fun.toLogin();
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
         location.reload();
       });
@@ -350,16 +350,16 @@ var fun = {
   },
   getWordList() {
     $.ajax({
-      method: "GET",
-      url: `${data_c.req_url}/api/keyword`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        pageSize: 1000,
-        page: 1
-      }
-    })
-      .done(function(data) {
+        method: "GET",
+        url: `${data_c.req_url}/api/keyword`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          pageSize: 1000,
+          page: 1
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           var html1 = ``;
@@ -387,23 +387,23 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
 
   getUserList() {
     $.ajax({
-      method: "GET",
-      url: `${data_c.req_url}/api/user`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        pageSize: 1000,
-        page: 1
-      }
-    })
-      .done(function(data) {
+        method: "GET",
+        url: `${data_c.req_url}/api/user`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          pageSize: 1000,
+          page: 1
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           var html1 = ``;
@@ -426,22 +426,22 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
   getIndexList() {
     $.ajax({
-      method: "GET",
-      url: `${data_c.req_url}/api/series`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        pageSize: 1000,
-        page: 1
-      }
-    })
-      .done(function(data) {
+        method: "GET",
+        url: `${data_c.req_url}/api/series`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          pageSize: 1000,
+          page: 1
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           var html1 = ``;
@@ -481,7 +481,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -500,16 +500,16 @@ var fun = {
   },
   getIndexList2() {
     $.ajax({
-      method: "GET",
-      url: `${data_c.req_url}/api/series/getSeriesChildrenList`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        pageSize: 1000,
-        page: 1
-      }
-    })
-      .done(function(data) {
+        method: "GET",
+        url: `${data_c.req_url}/api/series/getSeriesChildrenList`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          pageSize: 1000,
+          page: 1
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           var html1 = ``;
@@ -550,7 +550,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -570,16 +570,16 @@ var fun = {
   },
   getPlayList() {
     $.ajax({
-      method: "GET",
-      url: `${data_c.req_url}/api/product`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        pageSize: 1000,
-        page: 1
-      }
-    })
-      .done(function(data) {
+        method: "GET",
+        url: `${data_c.req_url}/api/product`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          pageSize: 1000,
+          page: 1
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           var html1 = ``;
@@ -637,25 +637,25 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
   editList3(id) {
     // console.log(id)
     $.ajax({
-      method: "get",
-      url: `${data_c.req_url}/api/product/${id}`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid
-      }
-    })
-      .done(function(data) {
+        method: "get",
+        url: `${data_c.req_url}/api/product/${id}`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         fun.editList3_fix(data.data);
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -709,16 +709,16 @@ var fun = {
       url = `${data_c.req_url}/api/series/updateStatus`;
     }
     $.ajax({
-      method: "post",
-      url: url,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        id: id,
-        status: state_fix
-      }
-    })
-      .done(function(data) {
+        method: "post",
+        url: url,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          id: id,
+          status: state_fix
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           alert(data.message);
@@ -730,7 +730,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -764,14 +764,14 @@ var fun = {
     var r = confirm("确定删除?");
     if (r == true) {
       $.ajax({
-        method: "DELETE",
-        url: `${data_c.req_url}/api/series/${id}`,
-        data: {
-          api_token: data_v.api_token,
-          uid: data_v.uid
-        }
-      })
-        .done(function(data) {
+          method: "DELETE",
+          url: `${data_c.req_url}/api/series/${id}`,
+          data: {
+            api_token: data_v.api_token,
+            uid: data_v.uid
+          }
+        })
+        .done(function (data) {
           // console.log(data)
           if (data.code == 0) {
             alert(data.message);
@@ -783,24 +783,23 @@ var fun = {
             alert(data.message || "未知错误!");
           }
         })
-        .fail(function(jqXHR, textStatus) {
+        .fail(function (jqXHR, textStatus) {
           // console.log("请求失败: " + textStatus);
         });
-    } else {
-    }
+    } else {}
   },
   deleteUserList(id) {
     var r = confirm("确定删除?");
     if (r == true) {
       $.ajax({
-        method: "DELETE",
-        url: `${data_c.req_url}/api/user/${id}`,
-        data: {
-          api_token: data_v.api_token,
-          uid: data_v.uid
-        }
-      })
-        .done(function(data) {
+          method: "DELETE",
+          url: `${data_c.req_url}/api/user/${id}`,
+          data: {
+            api_token: data_v.api_token,
+            uid: data_v.uid
+          }
+        })
+        .done(function (data) {
           // console.log(data)
           if (data.code == 0) {
             alert(data.message);
@@ -812,11 +811,10 @@ var fun = {
             alert(data.message || "未知错误!");
           }
         })
-        .fail(function(jqXHR, textStatus) {
+        .fail(function (jqXHR, textStatus) {
           // console.log("请求失败: " + textStatus);
         });
-    } else {
-    }
+    } else {}
   },
   editWordList(str) {
     var obj = str;
@@ -831,14 +829,14 @@ var fun = {
     var r = confirm("确定删除?");
     if (r == true) {
       $.ajax({
-        method: "DELETE",
-        url: `${data_c.req_url}/api/keyword/${id}`,
-        data: {
-          api_token: data_v.api_token,
-          uid: data_v.uid
-        }
-      })
-        .done(function(data) {
+          method: "DELETE",
+          url: `${data_c.req_url}/api/keyword/${id}`,
+          data: {
+            api_token: data_v.api_token,
+            uid: data_v.uid
+          }
+        })
+        .done(function (data) {
           // console.log(data)
           if (data.code == 0) {
             alert(data.message);
@@ -850,24 +848,23 @@ var fun = {
             alert(data.message || "未知错误!");
           }
         })
-        .fail(function(jqXHR, textStatus) {
+        .fail(function (jqXHR, textStatus) {
           // console.log("请求失败: " + textStatus);
         });
-    } else {
-    }
+    } else {}
   },
   deleteList2(id) {
     var r = confirm("确定删除?");
     if (r == true) {
       $.ajax({
-        method: "DELETE",
-        url: `${data_c.req_url}/api/product/${id}`,
-        data: {
-          api_token: data_v.api_token,
-          uid: data_v.uid
-        }
-      })
-        .done(function(data) {
+          method: "DELETE",
+          url: `${data_c.req_url}/api/product/${id}`,
+          data: {
+            api_token: data_v.api_token,
+            uid: data_v.uid
+          }
+        })
+        .done(function (data) {
           // console.log(data)
           if (data.code == 0) {
             alert(data.message);
@@ -879,11 +876,10 @@ var fun = {
             alert(data.message || "未知错误!");
           }
         })
-        .fail(function(jqXHR, textStatus) {
+        .fail(function (jqXHR, textStatus) {
           // console.log("请求失败: " + textStatus);
         });
-    } else {
-    }
+    } else {}
   },
   toLogin() {
     location.href = "page-login.html";
@@ -903,24 +899,22 @@ var fun = {
 
     var url = `${data_c.req_url}/api/file/uploadImage`;
     $.ajax({
-      url: url,
-      type: "POST",
-      data: formData,
-      processData: false,
-      contentType: false
-    })
-      .done(function(data) {
+        url: url,
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           data_v.img_url = data.data.fileName;
 
           if (data_v.page_play) {
-            data_v.img_box2 = [
-              {
-                path: data.data.fileName,
-                selected: 1
-              }
-            ];
+            data_v.img_box2 = [{
+              path: data.data.fileName,
+              selected: 1
+            }];
             // console.log(data_v.img_box2)
             fun.show_img_box();
           } else {
@@ -938,7 +932,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -955,13 +949,13 @@ var fun = {
     var url = `${data_c.req_url}/api/file/uploadVideo`;
     $("#pop_wait").show();
     $.ajax({
-      url: url,
-      type: "POST",
-      data: formData,
-      processData: false,
-      contentType: false
-    })
-      .done(function(data) {
+        url: url,
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false
+      })
+      .done(function (data) {
         $("#pop_wait").hide();
         // console.log(data)
         if (data.code == 0) {
@@ -976,15 +970,14 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         $("#pop_wait").hide();
 
         // console.log("请求失败: " + textStatus);
       });
   },
   show_img_box(choice) {
-    if (choice) {
-    } else {
+    if (choice) {} else {
       data_v.img_box = [].concat(data_v.img_box1, data_v.img_box2);
       for (var i = 0; i < data_v.img_box.length; i++) {
         if (i == 0) {
@@ -1027,6 +1020,10 @@ var fun = {
       alert("请输入完整参数!");
       return;
     }
+    if (title.length > 20 || title.replace(/\w/g, "").length > 10) {
+      alert("搜索词限制在10个字以内!");
+      return;
+    }
     var method = "";
     var url = "";
     if (data_v.edit) {
@@ -1037,16 +1034,16 @@ var fun = {
       url = `${data_c.req_url}/api/keyword`;
     }
     $.ajax({
-      method: method,
-      url: url,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        title: title,
-        sort: sort
-      }
-    })
-      .done(function(data) {
+        method: method,
+        url: url,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          title: title,
+          sort: sort
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           alert(data.message);
@@ -1059,7 +1056,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -1073,17 +1070,17 @@ var fun = {
       return;
     }
     $.ajax({
-      method: "POST",
-      url: `${data_c.req_url}/api/user`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        username: str,
-        email: str2,
-        password: str3
-      }
-    })
-      .done(function(data) {
+        method: "POST",
+        url: `${data_c.req_url}/api/user`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          username: str,
+          email: str2,
+          password: str3
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           alert(data.message);
@@ -1096,7 +1093,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -1121,18 +1118,18 @@ var fun = {
     }
 
     $.ajax({
-      method: method,
-      url: url,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        title: title,
-        image_url: image_url,
-        // pid: pid,
-        sort: sort
-      }
-    })
-      .done(function(data) {
+        method: method,
+        url: url,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          title: title,
+          image_url: image_url,
+          // pid: pid,
+          sort: sort
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           alert(data.message);
@@ -1145,7 +1142,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -1171,18 +1168,18 @@ var fun = {
     }
 
     $.ajax({
-      method: method,
-      url: url,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        title: title,
-        image_url: image_url,
-        pid: pid,
-        sort: sort
-      }
-    })
-      .done(function(data) {
+        method: method,
+        url: url,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          title: title,
+          image_url: image_url,
+          pid: pid,
+          sort: sort
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           alert(data.message);
@@ -1195,7 +1192,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -1235,7 +1232,7 @@ var fun = {
       alert("描述限制在20个字以内!");
       return;
     }
-    if (thitle.length > 20 || title.replace(/\w/g, "").length > 10) {
+    if (title.length > 20 || title.replace(/\w/g, "").length > 10) {
       alert("标题限制在10个字以内!");
       return;
     }
@@ -1255,12 +1252,12 @@ var fun = {
     }
 
     $.ajax({
-      method: "POST",
-      url: `${data_c.req_url}/api/product`,
-      contentType: "application/json",
-      data: JSON.stringify(data)
-    })
-      .done(function(data) {
+        method: method,
+        url: url,
+        contentType: "application/json",
+        data: JSON.stringify(data)
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           alert(data.message);
@@ -1273,7 +1270,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -1323,14 +1320,14 @@ var fun = {
   },
   getParentSeries(child) {
     $.ajax({
-      method: "GET",
-      url: `${data_c.req_url}/api/series/getParentSeries`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid
-      }
-    })
-      .done(function(data) {
+        method: "GET",
+        url: `${data_c.req_url}/api/series/getParentSeries`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           var html1 = "";
@@ -1349,7 +1346,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
@@ -1357,15 +1354,15 @@ var fun = {
     $("#exampleSelect2").html(``);
     var pid = $("#exampleSelect1")[0].value;
     $.ajax({
-      method: "GET",
-      url: `${data_c.req_url}/api/series/getProductSeries`,
-      data: {
-        api_token: data_v.api_token,
-        uid: data_v.uid,
-        pid: pid
-      }
-    })
-      .done(function(data) {
+        method: "GET",
+        url: `${data_c.req_url}/api/series/getProductSeries`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          pid: pid
+        }
+      })
+      .done(function (data) {
         // console.log(data)
         if (data.code == 0) {
           var html1 = "";
@@ -1375,8 +1372,7 @@ var fun = {
             html1 += `<option value='${arr1[i].id}'>${arr1[i].title}</option>`;
           }
           $("#exampleSelect2").html(html1);
-          if (child) {
-          }
+          if (child) {}
         } else if (data.code == -1) {
           fun.toLogin();
           alert(data.message);
@@ -1384,7 +1380,7 @@ var fun = {
           alert(data.message || "未知错误!");
         }
       })
-      .fail(function(jqXHR, textStatus) {
+      .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   }
