@@ -18,7 +18,8 @@ var data_v = {
   edit: 0,
   id: "",
   page_play: "",
-  sessionId: ""
+  sessionId: "",
+  level: '',
 };
 
 function dajian(page) {
@@ -26,7 +27,6 @@ function dajian(page) {
     fun.getSessionId();
   } else {
     if (!data_v.api_token || !data_v.uid) {
-      // console.log(123)
       location.href = "page-login.html";
       return;
     }
@@ -45,6 +45,7 @@ function dajian(page) {
     } else if (page == "index") {
       fun.start(page);
     } else if (page == "list") {
+      data_v.level = 1;
       fun.start(page);
       fun.getIndexList();
       $("#upImg_btn").on("click", () => {
@@ -63,6 +64,7 @@ function dajian(page) {
         fun.hideImgPop();
       });
     } else if (page == "list2") {
+      data_v.level = 2;
       fun.start(page);
       fun.getIndexList2(page);
       fun.getParentSeries();
@@ -77,6 +79,29 @@ function dajian(page) {
       });
       $("#add_btn").on("click", () => {
         fun.addList();
+      });
+      $("#close_img_pop_btn").on("click", () => {
+        fun.hideImgPop();
+      });
+    } else if (page == "list3") {
+      data_v.level = 3;
+      fun.start(page);
+      fun.getIndexList3(page);
+      fun.getParentSeries("child");
+      $("#upImg_btn").on("click", () => {
+        fun.upLoadImg();
+      });
+      $("#quit_btn").on("click", () => {
+        fun.hideList();
+      });
+      $("#submit_btn").on("click", () => {
+        fun.upList3();
+      });
+      $("#add_btn").on("click", () => {
+        fun.addList();
+      });
+      $("#exampleSelect1").on("change", () => {
+        fun.getProductSeries('2');
       });
       $("#close_img_pop_btn").on("click", () => {
         fun.hideImgPop();
@@ -96,7 +121,7 @@ function dajian(page) {
         fun.hideList();
       });
       $("#submit_btn").on("click", () => {
-        fun.upList3();
+        fun.upPlayList();
       });
       $("#add_btn").on("click", () => {
         fun.addList();
@@ -108,7 +133,10 @@ function dajian(page) {
         fun.hideVideoPop();
       });
       $("#exampleSelect1").on("change", () => {
-        fun.getProductSeries();
+        fun.getProductSeries('2');
+      });
+      $("#exampleSelect2").on("change", () => {
+        fun.getProductSeries('3');
       });
       $("#toggle_btn").on("click", () => {
         fun.toggle_upPlay();
@@ -296,10 +324,6 @@ var fun = {
             sessionStorage.uid = data.data.uid;
           }
           fun.toIndex();
-        } else if (data.code == -1) {
-          alert(data.message);
-        } else if (data.code == -2) {
-          alert(data.message);
         } else {
           alert(data.message || "未知错误!");
         }
@@ -325,7 +349,7 @@ var fun = {
         // console.log(data)
         if (data.code == 0) {
           alert(data.message);
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           alert(data.message);
         } else {
           alert(data.message || "未知错误!");
@@ -365,7 +389,7 @@ var fun = {
           var html1 = ``;
           var arr1 = data.data.list || [];
           for (var i = 0; i < arr1.length; i++) {
-            html1 += `<tr><td>${arr1[i].id}</td><td>${arr1[i].sort}</td><td>${
+            html1 += `<tr><td>${arr1[i].sort}</td><td>${
               arr1[i].title
             }</td><td>${
               arr1[i].search_number
@@ -380,7 +404,7 @@ var fun = {
           }
           $("#tbody").html(html1);
           $("#sampleTable").DataTable();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -409,7 +433,7 @@ var fun = {
           var html1 = ``;
           var arr1 = data.data.list || [];
           for (var i = 0; i < arr1.length; i++) {
-            html1 += `<tr><td>${arr1[i].id}</td><td>${
+            html1 += `<tr><td>${
               arr1[i].username
             }</td><td>${
               arr1[i].email
@@ -419,7 +443,7 @@ var fun = {
           }
           $("#tbody").html(html1);
           $("#sampleTable").DataTable();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -447,7 +471,7 @@ var fun = {
           var html1 = ``;
           var arr1 = data.data.list || [];
           for (var i = 0; i < arr1.length; i++) {
-            html1 += `<tr><td>${arr1[i].id}</td><td>${arr1[i].sort}</td><td>${
+            html1 += `<tr><td>${arr1[i].sort}</td><td>${
               arr1[i].title
             }</td><td><img onclick='fun.oppenImgPop("${data_c.req_url}/image/${
               arr1[i].image_url
@@ -474,7 +498,7 @@ var fun = {
           }
           $("#tbody").html(html1);
           $("#sampleTable").DataTable();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -506,7 +530,8 @@ var fun = {
           api_token: data_v.api_token,
           uid: data_v.uid,
           pageSize: 1000,
-          page: 1
+          page: 1,
+          level: 2,
         }
       })
       .done(function (data) {
@@ -515,7 +540,7 @@ var fun = {
           var html1 = ``;
           var arr1 = data.data.list || [];
           for (var i = 0; i < arr1.length; i++) {
-            html1 += `<tr><td>${arr1[i].id}</td><td>${arr1[i].sort}</td><td>${
+            html1 += `<tr><td>${arr1[i].sort}</td><td>${
               arr1[i].title
             }</td><td>${
               arr1[i].pid_title
@@ -543,7 +568,64 @@ var fun = {
           }
           $("#tbody").html(html1);
           $("#sampleTable").DataTable();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
+          fun.toLogin();
+          alert(data.message);
+        } else {
+          alert(data.message || "未知错误!");
+        }
+      })
+      .fail(function (jqXHR, textStatus) {
+        // console.log("请求失败: " + textStatus);
+      });
+  },
+  getIndexList3() {
+    $.ajax({
+        method: "GET",
+        url: `${data_c.req_url}/api/series/getSeriesChildrenList`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          pageSize: 1000,
+          page: 1,
+          level: 3,
+        }
+      })
+      .done(function (data) {
+        // console.log(data)
+        if (data.code == 0) {
+          var html1 = ``;
+          var arr1 = data.data.list || [];
+          for (var i = 0; i < arr1.length; i++) {
+            html1 += `<tr><td>${arr1[i].sort}</td><td>${
+              arr1[i].title
+            }</td><td>${
+              arr1[i].pid_title
+            }</td><td><img onclick='fun.oppenImgPop("${data_c.req_url}/image/${
+              arr1[i].image_url
+            }")' style='cursor:pointer;width:100%;max-width:200px' src='${
+              data_c.req_url
+            }/image/${arr1[i].image_url}'/></td><td>${
+              arr1[i].status == 1 ? "已发布" : "草稿"
+            } <div class='h1'></div>
+                    <div class='h1'></div>
+                    <div class='h1'></div>
+                    <button onclick='fun.oppenUpStates("${arr1[i].id}","${
+              arr1[i].status
+            }","series")'  class="btn btn-sm btn-primary" type="button">${
+              arr1[i].status == 1 ? "取消发布" : "发布"
+            }</button></td><td><button onclick='fun.deleteList(${
+              arr1[i].id
+            })'  class="btn btn-sm btn-danger" type="button">删除</button> <div class='h1'></div>
+                    <div class='h1'></div>
+                    <div class='h1'></div>
+                    <button onclick='fun.editList2(${JSON.stringify(
+                      arr1[i]
+                    )})'  class="btn btn-sm btn-success" type="button">编辑</button></td></tr>`;
+          }
+          $("#tbody").html(html1);
+          $("#sampleTable").DataTable();
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -590,7 +672,7 @@ var fun = {
             for (var j = 0; j < arr2.length; j++) {
               html2 += `<span>${arr2[j]}</span><br>`;
             }
-            html1 += `<tr><td>${arr1[i].id}</td><td>${arr1[i].sort}</td><td>${
+            html1 += `<tr><td>${arr1[i].sort}</td><td>${
               arr1[i].click_num
             }</td><td>${arr1[i].title}</td><td>${
               arr1[i].description
@@ -615,7 +697,7 @@ var fun = {
                     <div class='h1'></div>
                     <div class='h1'></div>                    <div class='h1'></div>
 
-                    <button onclick='fun.editList3(${
+                    <button onclick='fun.editPlayList(${
                       arr1[i].id
                     })'  class="btn btn-sm btn-waring" type="button">编辑</button>
                     <div class='h1'></div>
@@ -630,7 +712,7 @@ var fun = {
           }
           $("#tbody").html(html1);
           $("#sampleTable").DataTable();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -641,7 +723,7 @@ var fun = {
         // console.log("请求失败: " + textStatus);
       });
   },
-  editList3(id) {
+  editPlayList(id) {
     // console.log(id)
     $.ajax({
         method: "get",
@@ -653,13 +735,13 @@ var fun = {
       })
       .done(function (data) {
         // console.log(data)
-        fun.editList3_fix(data.data);
+        fun.editPlayList_fix(data.data);
       })
       .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
   },
-  editList3_fix(str) {
+  editPlayList_fix(str) {
     var obj = str;
     // console.log(obj)
     $("#list_editor").val(obj.title);
@@ -723,7 +805,7 @@ var fun = {
         if (data.code == 0) {
           alert(data.message);
           location.reload();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -776,7 +858,7 @@ var fun = {
           if (data.code == 0) {
             alert(data.message);
             location.reload();
-          } else if (data.code == -1) {
+          } else if (data.code == 401) {
             fun.toLogin();
             alert(data.message);
           } else {
@@ -804,7 +886,7 @@ var fun = {
           if (data.code == 0) {
             alert(data.message);
             location.reload();
-          } else if (data.code == -1) {
+          } else if (data.code == 401) {
             fun.toLogin();
             alert(data.message);
           } else {
@@ -841,7 +923,7 @@ var fun = {
           if (data.code == 0) {
             alert(data.message);
             location.reload();
-          } else if (data.code == -1) {
+          } else if (data.code == 401) {
             fun.toLogin();
             alert(data.message);
           } else {
@@ -869,7 +951,7 @@ var fun = {
           if (data.code == 0) {
             alert(data.message);
             location.reload();
-          } else if (data.code == -1) {
+          } else if (data.code == 401) {
             fun.toLogin();
             alert(data.message);
           } else {
@@ -925,7 +1007,7 @@ var fun = {
             $("#fileHelp").hide();
             $("#imgFileShow").show();
           }
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -963,7 +1045,7 @@ var fun = {
           data_v.img_box1 = data.data.imagePath;
           // console.log(data_v.img_box)
           fun.show_img_box();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -1049,7 +1131,7 @@ var fun = {
           alert(data.message);
           fun.hideList();
           location.reload();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -1086,7 +1168,7 @@ var fun = {
           alert(data.message);
           fun.hideList();
           location.reload();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -1135,7 +1217,7 @@ var fun = {
           alert(data.message);
           fun.hideList();
           location.reload();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -1185,7 +1267,7 @@ var fun = {
           alert(data.message);
           fun.hideList();
           location.reload();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -1197,6 +1279,56 @@ var fun = {
       });
   },
   upList3() {
+    var title = $("#list_editor").val();
+    var image_url = data_v.img_url;
+    var pid = $("#exampleSelect1")[0].value;
+    var sort = $("#sortInput1").val();
+
+    if (!title || !image_url) {
+      alert("请输入完整参数!");
+      return;
+    }
+
+    var url = "";
+    var method = "";
+    if (data_v.edit) {
+      method = "put";
+      url = `${data_c.req_url}/api/series/${data_v.id}`;
+    } else {
+      method = "POST";
+      url = `${data_c.req_url}/api/series`;
+    }
+
+    $.ajax({
+        method: method,
+        url: url,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          title: title,
+          image_url: image_url,
+          pid: pid,
+          sort: sort
+        }
+      })
+      .done(function (data) {
+        // console.log(data)
+        if (data.code == 0) {
+          alert(data.message);
+          fun.hideList();
+          location.reload();
+        } else if (data.code == 401) {
+          fun.toLogin();
+          alert(data.message);
+        } else {
+          alert(data.message || "未知错误!");
+        }
+      })
+      .fail(function (jqXHR, textStatus) {
+        // console.log("请求失败: " + textStatus);
+      });
+  },
+  upPlayList() {
     var description = $("#exampleTextarea").val();
     var title = $("#list_editor").val();
     var sub_title = $("#list_editor2").val() || "去除";
@@ -1263,7 +1395,7 @@ var fun = {
           alert(data.message);
           fun.hideList();
           location.reload();
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -1337,9 +1469,9 @@ var fun = {
           }
           $("#exampleSelect1").html(html1);
           if (child) {
-            fun.getProductSeries();
+            fun.getProductSeries('2', '3');
           }
-        } else if (data.code == -1) {
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
@@ -1350,9 +1482,19 @@ var fun = {
         // console.log("请求失败: " + textStatus);
       });
   },
-  getProductSeries(child) {
+  getProductSeries(l1, l2, l3) {
     $("#exampleSelect2").html(``);
-    var pid = $("#exampleSelect1")[0].value;
+    var pid;
+    if (l1 == 2) {
+      pid = $("#exampleSelect1")[0].value;
+    } else {
+      if (l3) {
+        pid = l3
+      } else {
+        pid = $("#exampleSelect2")[0].value;
+
+      }
+    }
     $.ajax({
         method: "GET",
         url: `${data_c.req_url}/api/series/getProductSeries`,
@@ -1368,12 +1510,30 @@ var fun = {
           var html1 = "";
           var arr1 = data.data;
           data_v.arr2 = arr1;
-          for (var i = 0; i < arr1.length; i++) {
-            html1 += `<option value='${arr1[i].id}'>${arr1[i].title}</option>`;
+          var val = ''
+          if (arr1.length == 0) {
+            val = '00000'
+            for (var i = 0; i < arr1.length; i++) {
+              html1 = `<option value='00000'>无选项</option>`;
+            }
+          } else {
+            var val = arr1[0].id
+            for (var i = 0; i < arr1.length; i++) {
+              html1 += `<option value='${arr1[i].id}'>${arr1[i].title}</option>`;
+            }
           }
-          $("#exampleSelect2").html(html1);
-          if (child) {}
-        } else if (data.code == -1) {
+          console.log(html1)
+          if (l1 == 2) {
+            console.log('exampleSelect2')
+            $("#exampleSelect2").html(html1);
+          } else {
+            console.log('exampleSelect3')
+            $("#exampleSelect3").html(html1);
+          }
+          if (l2) {
+            fun.getProductSeries('3', 0, val)
+          }
+        } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
         } else {
