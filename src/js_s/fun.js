@@ -1,6 +1,6 @@
 const data_c = {
-  req_url: 'https://dj.majiangyun.com/',
-  req_url_http: "http://dj.majiangyun.com",
+  req_url: "https://dj.majiangyun.com/",
+  req_url_http: "http://dj.majiangyun.com"
 };
 var data_v = {
   api_token: sessionStorage.api_token || localStorage.api_token,
@@ -19,7 +19,7 @@ var data_v = {
   id: "",
   page_play: "",
   sessionId: "",
-  level: '',
+  level: ""
 };
 
 function dajian(page) {
@@ -87,7 +87,7 @@ function dajian(page) {
       data_v.level = 3;
       fun.start(page);
       fun.getIndexList3(page);
-      fun.getParentSeries("child");
+      fun.getParentSeries("1");
       $("#upImg_btn").on("click", () => {
         fun.upLoadImg();
       });
@@ -101,7 +101,7 @@ function dajian(page) {
         fun.addList();
       });
       $("#exampleSelect1").on("change", () => {
-        fun.getProductSeries('2');
+        fun.getProductSeries();
       });
       $("#close_img_pop_btn").on("click", () => {
         fun.hideImgPop();
@@ -110,7 +110,7 @@ function dajian(page) {
       data_v.page_play = true;
       fun.start(page);
       fun.getPlayList(page);
-      fun.getParentSeries("child");
+      fun.getParentSeries("2");
       $("#upImg_btn").on("click", () => {
         fun.upLoadImg();
       });
@@ -133,13 +133,19 @@ function dajian(page) {
         fun.hideVideoPop();
       });
       $("#exampleSelect1").on("change", () => {
-        fun.getProductSeries('2');
+        fun.getProductSeries();
       });
       $("#exampleSelect2").on("change", () => {
-        fun.getProductSeries('3');
+        fun.getProductSeries2();
       });
-      $("#toggle_btn").on("click", () => {
-        fun.toggle_upPlay();
+      $("#toggle_btn1").on("click", () => {
+        fun.toggle_upPlay(1);
+      });
+      $("#toggle_btn2").on("click", () => {
+        fun.toggle_upPlay(2);
+      });
+      $("#toggle_btn3").on("click", () => {
+        fun.toggle_upPlay(3);
       });
       $("#addProduct_btn").on("click", () => {
         fun.addProduct();
@@ -218,22 +224,33 @@ var fun = {
       });
   },
   addProduct() {
-    var series = $("#exampleSelect1")[0].value;
-    var product = $("#exampleSelect2")[0].value;
-    var arr = data_v.arr2;
+    var series = "";
+    var series1 = $("#exampleSelect1")[0].value;
+    var series2 = $("#exampleSelect2")[0].value;
+    var series3 = $("#exampleSelect3")[0].value;
+
     var title = "";
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i].id == product) {
-        title = arr[i].title;
-      }
+
+    if (series2 == "00000" && series3 == "00000") {
+      series = series1;
+      title = $(`#exampleSelect1 option[value=${series1}]`).html();
+    } else if (series3 == "00000") {
+      series = series2;
+      title = $(`#exampleSelect2 option[value=${series2}]`).html();
+    } else {
+      series = series3;
+      title = $(`#exampleSelect3 option[value=${series3}]`).html();
     }
+
     var obj = {
-      series: series,
-      product: product,
+      // series: series,
+      // series2: series2,
+      // threeSeries: threeSeries,
+      product: series,
       title: title
     };
     data_v.product.push(obj);
-    // console.log(data_v.product, title)
+    console.log(JSON.stringify(data_v.product));
     fun.add_product_html();
   },
   add_product_html() {
@@ -242,14 +259,12 @@ var fun = {
     for (var j = 0; j < arr.length; j++) {
       data_v.i = data_v.i + 1;
       html += `
-            <div class=" col-md-6 product_list_el${data_v.i}">
+            <div class=" col-md-6 product_list_el${arr[j].product}">
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <strong class="product_list_el">${
-                  data_v.product[j].title
+                  arr[j].title
                 }</strong>
-                <button type="button" class="close" onclick='fun.delete_product_list(${
-                  data_v.i
-                },${data_v.product[j].product})'>
+                <button type="button" class="close" onclick='fun.delete_product_list(${arr[j].product})'>
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -259,17 +274,17 @@ var fun = {
     $("#product_list").html("");
     $("#product_list").html(html);
   },
-  delete_product_list(i, p) {
-    $(`.product_list_el${i}`).remove();
-    var j = 0;
-    for (var i = 0; i < data_v.product; i++) {
+  delete_product_list(p) {
+    $(`.product_list_el${p}`).remove();
+    var j ;
+    for (var i = 0; i < data_v.length; i++) {
       if (data_v.product[i].product == p) {
         j = i;
         break;
       }
     }
-    data_v.product = data_v.product.splice(j, 1);
-    // console.log(data_v.product)
+     data_v.product.splice(j, 1);
+    console.log(JSON.stringify(data_v.product))
   },
   start(page) {
     $(".app-menu__item").removeClass("active");
@@ -361,15 +376,23 @@ var fun = {
         location.reload();
       });
   },
-  toggle_upPlay() {
-    if (data_v.type == 1) {
-      data_v.type = 2;
+  toggle_upPlay(a) {
+    $("#up_play1").hide();
+    $("#up_play2").hide();
+    $("#up_play3").hide();
+    $(".toggle_btn")
+      .removeClass("btn-primary")
+      .addClass("btn-secondary");
+    $(`#toggle_btn${a}`)
+      .addClass("btn-primary")
+      .removeClass("btn-secondary");
+    data_v.type = a;
+    if (a == 1) {
       $("#up_play1").show();
-      $("#up_play2").hide();
-    } else {
-      data_v.type = 1;
-      $("#up_play1").hide();
+    } else if (a == 2) {
       $("#up_play2").show();
+    } else {
+      $("#up_play3").show();
     }
   },
   getWordList() {
@@ -433,9 +456,7 @@ var fun = {
           var html1 = ``;
           var arr1 = data.data.list || [];
           for (var i = 0; i < arr1.length; i++) {
-            html1 += `<tr><td>${
-              arr1[i].username
-            }</td><td>${
+            html1 += `<tr><td>${arr1[i].username}</td><td>${
               arr1[i].email
             }</td><td><button onclick='fun.deleteUserList(${
               arr1[i].id
@@ -531,7 +552,7 @@ var fun = {
           uid: data_v.uid,
           pageSize: 1000,
           page: 1,
-          level: 2,
+          level: 2
         }
       })
       .done(function (data) {
@@ -588,7 +609,7 @@ var fun = {
           uid: data_v.uid,
           pageSize: 1000,
           page: 1,
-          level: 3,
+          level: 3
         }
       })
       .done(function (data) {
@@ -619,8 +640,8 @@ var fun = {
             })'  class="btn btn-sm btn-danger" type="button">删除</button> <div class='h1'></div>
                     <div class='h1'></div>
                     <div class='h1'></div>
-                    <button onclick='fun.editList2(${JSON.stringify(
-                      arr1[i]
+                    <button onclick='fun.editList3(${JSON.stringify(
+                      arr1[i].id
                     )})'  class="btn btn-sm btn-success" type="button">编辑</button></td></tr>`;
           }
           $("#tbody").html(html1);
@@ -635,6 +656,44 @@ var fun = {
       .fail(function (jqXHR, textStatus) {
         // console.log("请求失败: " + textStatus);
       });
+  },
+  editList3(id) {
+    $.ajax({
+        method: "get",
+        url: `${data_c.req_url}/api/series/getThreeSeriesById`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          id: id
+        }
+      })
+      .done(function (data) {
+        // console.log(data)
+        fun.editList3_fix(data.data);
+      })
+      .fail(function (jqXHR, textStatus) {
+        // console.log("请求失败: " + textStatus);
+      });
+  },
+  editList3_fix(str) {
+    var obj = str;
+    // console.log(obj)
+    $("#pop_list").show();
+    $("#list_editor").val(obj.title);
+    data_v.img_url = obj.image_url;
+    $("#sortInput1").val(obj.sort);
+    $("#exampleSelect1")[0].value = obj.series1_id;
+    setTimeout(() => {
+      $("#exampleSelect2")[0].value = obj.series2_id;
+    }, 100);
+    setTimeout(() => {
+      $("#exampleSelect2")[0].value = obj.series2_id;
+    }, 1000);
+    $("#up_img_box").attr("src", `${data_c.req_url}/image/${data_v.img_url}`);
+    $("#fileHelp").hide();
+    $("#imgFileShow").show();
+    data_v.edit = 1;
+    data_v.id = obj.id;
   },
   editList2(str) {
     var obj = str;
@@ -769,17 +828,14 @@ var fun = {
 
     fun.show_img_box(true);
 
-    if (data_v.type != 1) {
+    if (data_v.type == 2) {
       data_v.play_url = obj.video_url;
-
-      $("#up_play1").show();
-      $("#up_play2").hide();
+    } else if (data_v.type == 3) {
+      $("#tx_url2").val(obj.video_url);
     } else {
       $("#tx_url").val(obj.video_url);
-
-      $("#up_play1").hide();
-      $("#up_play2").show();
     }
+    fun.toggle_upPlay(data_v.type);
     $("#pop_list").show();
   },
   oppenUpStates(id, state, type) {
@@ -1258,7 +1314,8 @@ var fun = {
           title: title,
           image_url: image_url,
           pid: pid,
-          sort: sort
+          sort: sort,
+          level: data_v.level
         }
       })
       .done(function (data) {
@@ -1282,13 +1339,12 @@ var fun = {
     var title = $("#list_editor").val();
     var image_url = data_v.img_url;
     var pid = $("#exampleSelect1")[0].value;
+    var pid2 = $("#exampleSelect2")[0].value;
     var sort = $("#sortInput1").val();
-
     if (!title || !image_url) {
       alert("请输入完整参数!");
       return;
     }
-
     var url = "";
     var method = "";
     if (data_v.edit) {
@@ -1307,8 +1363,10 @@ var fun = {
           uid: data_v.uid,
           title: title,
           image_url: image_url,
-          pid: pid,
-          sort: sort
+          // pid: pid,
+          pid: pid2,
+          sort: sort,
+          level: data_v.level
         }
       })
       .done(function (data) {
@@ -1335,8 +1393,12 @@ var fun = {
     var image_url = data_v.img_url;
     var play_url = data_v.play_url;
     var tx_url = $("#tx_url").val();
+    var tx_url2 = $("#tx_url2").val();
+
     if (data_v.type == 1) {
       play_url = tx_url;
+    } else if (data_v.type == 3) {
+      play_url = tx_url2;
     }
     var pid = $("#exampleSelect1")[0].value;
     var type_id = $("#exampleSelect2")[0].value;
@@ -1439,6 +1501,7 @@ var fun = {
     var type_list = [];
     $("#vid").val("");
     $("#tx_url").val("");
+    $("#tx_url2").val("");
     $("#sortInput1").val("");
     $("#fileHelp").show();
     $("#imgFileShow").hide();
@@ -1468,9 +1531,8 @@ var fun = {
             html1 += `<option value='${arr1[i].id}'>${arr1[i].title}</option>`;
           }
           $("#exampleSelect1").html(html1);
-          if (child) {
-            fun.getProductSeries('2', '3');
-          }
+
+          fun.getProductSeries();
         } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);
@@ -1482,19 +1544,9 @@ var fun = {
         // console.log("请求失败: " + textStatus);
       });
   },
-  getProductSeries(l1, l2, l3) {
+  getProductSeries() {
     $("#exampleSelect2").html(``);
-    var pid;
-    if (l1 == 2) {
-      pid = $("#exampleSelect1")[0].value;
-    } else {
-      if (l3) {
-        pid = l3
-      } else {
-        pid = $("#exampleSelect2")[0].value;
-
-      }
-    }
+    var pid = $("#exampleSelect1")[0].value;
     $.ajax({
         method: "GET",
         url: `${data_c.req_url}/api/series/getProductSeries`,
@@ -1510,29 +1562,69 @@ var fun = {
           var html1 = "";
           var arr1 = data.data;
           data_v.arr2 = arr1;
-          var val = ''
+          var val = "";
           if (arr1.length == 0) {
-            val = '00000'
-            for (var i = 0; i < arr1.length; i++) {
-              html1 = `<option value='00000'>无选项</option>`;
-            }
+            val = "00000";
+            html1 = `<option value='00000'>无选项</option>`;
           } else {
-            var val = arr1[0].id
+            var val = arr1[0].id;
             for (var i = 0; i < arr1.length; i++) {
-              html1 += `<option value='${arr1[i].id}'>${arr1[i].title}</option>`;
+              html1 += `<option value='${arr1[i].id}'>${
+                arr1[i].title
+              }</option>`;
             }
           }
-          console.log(html1)
-          if (l1 == 2) {
-            console.log('exampleSelect2')
-            $("#exampleSelect2").html(html1);
-          } else {
-            console.log('exampleSelect3')
+
+          $("#exampleSelect2").html(html1);
+          if (arr1.length == 0) {
             $("#exampleSelect3").html(html1);
+
+          } else {
+            fun.getProductSeries2();
           }
-          if (l2) {
-            fun.getProductSeries('3', 0, val)
+        } else if (data.code == 401) {
+          fun.toLogin();
+          alert(data.message);
+        } else {
+          alert(data.message || "未知错误!");
+        }
+      })
+      .fail(function (jqXHR, textStatus) {
+        // console.log("请求失败: " + textStatus);
+      });
+  },
+  getProductSeries2() {
+    $("#exampleSelect3").html(``);
+    var pid = $("#exampleSelect2")[0].value;
+    $.ajax({
+        method: "GET",
+        url: `${data_c.req_url}/api/series/getProductSeries`,
+        data: {
+          api_token: data_v.api_token,
+          uid: data_v.uid,
+          pid: pid
+        }
+      })
+      .done(function (data) {
+        // console.log(data)
+        if (data.code == 0) {
+          var html1 = "";
+          var arr1 = data.data;
+          data_v.arr2 = arr1;
+          var val = "";
+          if (arr1.length == 0) {
+            val = "00000";
+            html1 = `<option value='00000'>无选项</option>`;
+          } else {
+            var val = arr1[0].id;
+            for (var i = 0; i < arr1.length; i++) {
+              html1 += `<option value='${arr1[i].id}'>${
+                arr1[i].title
+              }</option>`;
+            }
           }
+
+          $("#exampleSelect3").html(html1);
         } else if (data.code == 401) {
           fun.toLogin();
           alert(data.message);

@@ -10,23 +10,23 @@
                                     <div class="tile">
                                         <div class="tile-body">
                                             <div class="row">
-                                                <div class="form-group col-md-5">
+                                                <div class="form-group col-md-3">
                                                     <label for="exampleSelect1">选择系列</label>
                                                     <select class="form-control" id="exampleSelect1">
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-md-5">
+                                                <div class="form-group col-md-3">
                                                     <label for="exampleSelect2">选择产品</label>
                                                     <select class="form-control" id="exampleSelect2">
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-md-5">
+                                                <div class="form-group col-md-3">
                                                     <label for="exampleSelect3">选择子产品</label>
                                                     <select class="form-control" id="exampleSelect3">
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-md-2">
-                                                    <label for="add_product">&nbsp;</label>
+                                                <div class="form-group col-md-3">
+                                                    <label for="add_product"> &nbsp;&nbsp; </label><br>
                                                     <button id='addProduct_btn' class="btn btn-sm btn-info" type="button">新增产品</button>
                                                     </select>
                                                 </div>
@@ -68,9 +68,11 @@
                                         <div class="form-group col-md-12">
                                             <label for="exampleInputFile">上传视频</label>
                                             <div class="h1"></div>
-                                            <button id='toggle_btn' class="btn btn-sm btn-info" type="button">切换上传视频方式</button>
+                                            <button id='toggle_btn2' class="toggle_btn btn btn-sm btn-primary" type="button">本地上传</button>
+                                            <button id='toggle_btn1' class="toggle_btn btn btn-sm btn-secondary" type="button">腾讯视频</button>
+                                            <button id='toggle_btn3' class="toggle_btn btn btn-sm btn-secondary" type="button">网上地址</button>
                                         </div>
-                                        <div class="form-group col-md-6" id="up_play1" style="display:block">
+                                        <div class="form-group col-md-6" id="up_play2" style="display:block">
                                             <label for="exampleInputFile">上传视频到服务器</label>
                                             <input id="play_editor" class="form-control-file" type="file"
                                                 aria-describedby="fileHelp">
@@ -85,7 +87,7 @@
                                             <button id='upPlay_btn' class="btn btn-sm btn-info" type="button">上传视频</button>
                                         </div>
 
-                                        <div class="form-group col-md-6" id="up_play2" style="display:none">
+                                        <div class="form-group col-md-6" id="up_play1" style="display:none">
                                             <label for="exampleInputFile">引用腾讯视频</label>
                                             <div class="h1"></div>
                                             <input id="vid" class="form-control" type="text" placeholder="视频vid">
@@ -96,6 +98,12 @@
 
                                         </div>
 
+                                        <div class="form-group col-md-6" id="up_play3" style="display:none">
+                                            <label for="exampleInputFile">引用网络地址</label>
+                                            <div class="h1"></div>
+                                            <input id="tx_url2" class="form-control" type="text" placeholder="视频链接">
+                                            <div class="h1"></div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group col-md-12">
